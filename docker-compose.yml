@@ -1,0 +1,13 @@
+version: '3'
+services:
+  mongo:
+    image: mongo:5.0.6
+
+  app:
+    build: .
+    environment:
+      MONGODB_URL: mongodb://mongo:27017
+    ports:
+      - 80:3000
+    depends_on:
+      - mongo
