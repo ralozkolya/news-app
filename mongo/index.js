@@ -24,6 +24,11 @@ if (mongoose.models.News) {
 } else {
 
   const NewsSchema = new mongoose.Schema({
+    id: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     title: {
       type: String,
       required: true,
@@ -42,8 +47,6 @@ if (mongoose.models.News) {
     },
     urlToImage: String,
   })
-
-  NewsSchema.index({ title: 1, publishedAt: 1 }, { unique: true })
 
   news = mongoose.model('News', NewsSchema)
 
