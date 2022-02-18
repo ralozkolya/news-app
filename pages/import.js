@@ -45,8 +45,7 @@ export default function Import() {
 
   const importNews = async () => {
     const news = [ ...selected.values() ]
-    const response = await axios.post('/api/import', news)
-    console.log(response)
+    await axios.post('/api/import', news)
   }
 
   useEffect(() => {
