@@ -1,7 +1,10 @@
 import PropTypes from 'prop-types'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 export default function Pagination({ count, page, perPage = 20 }) {
+
+  const router = useRouter();
 
   const last = Math.ceil(count / perPage)
   const result = [ page - 2, page - 1, page, page + 1, page + 2 ]
@@ -13,7 +16,7 @@ export default function Pagination({ count, page, perPage = 20 }) {
         {
           filtered.map(page => (
             <li className="page-item" key={ page }>
-              <Link href={ `${ location.pathname }?page=${page}` }>
+              <Link href={ `${ router.pathname }?page=${page}` }>
                 <a className="page-link">
                   { page }
                 </a>
