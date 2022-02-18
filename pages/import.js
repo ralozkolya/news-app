@@ -35,9 +35,9 @@ export default function Import() {
     try {
       const result = await axios.get(`/api/news?page=${page}`, { params })
       setNewsResponse(result.data)
-    } catch (e) {
+    } catch (error) {
       setTimeout(setError, 5000, null)
-      setError(e.response?.data?.error || 'Error retrieving news')
+      setError(error.response?.data?.error || 'Error retrieving news')
     }
 
     setLoading(false)

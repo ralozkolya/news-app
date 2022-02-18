@@ -32,10 +32,10 @@ export default async (req, res) => {
     response.data.articles = uniqBy(response.data.articles, news => news.id)
 
     res.status(200).json(response.data)
-  } catch (e) {
-    console.error(e)
+  } catch (error) {
+    console.error(error)
     res
-      .status(e.response?.status || 500)
-      .json({ error: e.response?.data?.message || 'Error retrieving news' })
+      .status(error.response?.status || 500)
+      .json({ error: error.response?.data?.message || 'Error retrieving news' })
   }
 }
