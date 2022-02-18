@@ -8,7 +8,7 @@ export default async (req, res) => {
     errors: [],
   }
 
-  await Bluebird.map(req.body, async article => {
+  await Bluebird.each(req.body, async article => {
 
     try {
       const news = new News(article)
