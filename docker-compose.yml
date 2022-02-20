@@ -2,12 +2,16 @@ version: '3'
 services:
   mongo:
     image: mongo:5.0.6
+    restart: unless-stopped
 
   app:
     build: .
     environment:
       MONGODB_URL: mongodb://mongo:27017
+      NEWS_URL: https://newsapi.org/v2
+      NEWS_TOKEN: 8325c53c613442a183ebfd892adf0308
     ports:
       - 80:3000
     depends_on:
       - mongo
+    restart: unless-stopped
