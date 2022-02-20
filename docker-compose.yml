@@ -4,14 +4,23 @@ services:
     image: mongo:5.0.6
     restart: unless-stopped
 
+  nginx:
+    image: danieldent/nginx-ssl-proxy
+    environment:
+      UPSTREAM: app:3000
+      SERVERNAME: ${SERVERNAME}
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: unless-stopped
+
   app:
     build: .
     environment:
       MONGODB_URL: mongodb://mongo:27017
-      NEWS_URL: https://newsapi.org/v2
-      NEWS_TOKEN: 8325c53c613442a183ebfd892adf0308
-    ports:
-      - 80:3000
+      NEWS_URL: ${NEWS_URL}
+      NEWS_TOKEN: ${NEWS_TOKEN}
     depends_on:
       - mongo
+      - nginx
     restart: unless-stopped
