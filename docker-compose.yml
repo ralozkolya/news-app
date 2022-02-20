@@ -17,7 +17,7 @@ services:
   app:
     build: .
     environment:
-      MONGODB_URL: mongodb://mongo:27017
+      MONGODB_URL: mongodb://mongo:27017/news-app
       NEWS_URL: ${NEWS_URL}
       NEWS_TOKEN: ${NEWS_TOKEN}
     depends_on:
