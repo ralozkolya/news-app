@@ -4,16 +4,6 @@ services:
     image: mongo:5.0.6
     restart: unless-stopped
 
-  nginx:
-    image: danieldent/nginx-ssl-proxy
-    environment:
-      UPSTREAM: app:3000
-      SERVERNAME: news.razmadze.me
-    ports:
-      - "80:80"
-      - "443:443"
-    restart: unless-stopped
-
   app:
     build: .
     environment:
@@ -23,9 +13,7 @@ services:
       NEWS_URL: https://newsapi.org/v2
       NEWS_TOKEN: 8325c53c613442a183ebfd892adf0308
     ports:
-      # Exposing for development, for production nginx container should be used
       - "3000:3000"
     depends_on:
       - mongo
-      - nginx
     restart: unless-stopped
