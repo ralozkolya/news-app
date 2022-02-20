@@ -1,9 +1,18 @@
 import Link from 'next/link'
+import { useEffect, useRef } from 'react'
 import { useRouter } from 'next/router';
 
 export default function Navbar() {
 
-  const router = useRouter();
+  const router = useRouter()
+
+  const ref = useRef()
+
+  useEffect(async () => {
+    const { Collapse } = await import('bootstrap')
+    const collapse = Collapse.getOrCreateInstance(ref.current, { toggle: false })
+    collapse?.hide()
+  }, [ router ]);
 
   const getLinkClass = path => {
     return router.pathname === path ? 'nav-link active' : 'nav-link'
@@ -18,7 +27,7 @@ export default function Navbar() {
         <button className="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse">
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse" id="navbar-collapse">
+        <div ref={ ref } className="collapse navbar-collapse" id="navbar-collapse">
           <ul className="navbar-nav ms-auto my-3 my-md-0">
             <li className="nav-item">
               <Link href="/news">

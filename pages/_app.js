@@ -8,7 +8,7 @@ import '../styles/global.scss'
 function MyApp({ Component, pageProps }) {
 
   useEffect(() => {
-    import('bootstrap/dist/js/bootstrap')
+    import('bootstrap')
   }, [])
 
   return (
