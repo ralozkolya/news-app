@@ -8,7 +8,7 @@ services:
     image: danieldent/nginx-ssl-proxy
     environment:
       UPSTREAM: app:3000
-      SERVERNAME: ${SERVERNAME}
+      SERVERNAME: news.razmadze.me
     ports:
       - "80:80"
       - "443:443"
@@ -17,9 +17,14 @@ services:
   app:
     build: .
     environment:
+      # Usually these would go in environmental variables,
+      # but for this demo I've left them here
       MONGODB_URL: mongodb://mongo:27017/news-app
-      NEWS_URL: ${NEWS_URL}
-      NEWS_TOKEN: ${NEWS_TOKEN}
+      NEWS_URL: https://newsapi.org/v2
+      NEWS_TOKEN: 8325c53c613442a183ebfd892adf0308
+    ports:
+      # Exposing for development, for production nginx container should be used
+      - "3000:3000"
     depends_on:
       - mongo
       - nginx
