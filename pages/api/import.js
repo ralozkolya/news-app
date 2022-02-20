@@ -13,7 +13,7 @@ export default async (req, res) => {
     try {
       const news = new News(article)
       await news.save()
-      response.added.push(article.id)
+      response.added.push(article.title)
     } catch (error) {
       const message = error.code === 11000 ?
         `Duplicate article '${article.title}'` :

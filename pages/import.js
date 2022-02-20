@@ -6,7 +6,8 @@ import { useRouter } from 'next/router'
 
 export default function Import() {
 
-  const [loading, setLoading] = useState(false)
+  const [loadingSearch, setLoadingSearch] = useState(false)
+  const [loadingImport, setLoadingImport] = useState(false)
 
   const [q, setQ] = useState('')
   const [from, setFrom] = useState('')
@@ -16,6 +17,7 @@ export default function Import() {
 
   const [expanded, setExpanded] = useState(false)
   const [error, setError] = useState(null)
+  const [success, setSuccess] = useState(null)
 
   const [newsResponse, setNewsResponse] = useState([])
   const [selected, setSelected] = useState(new Map())
@@ -24,7 +26,7 @@ export default function Import() {
   const page = Math.max(1, query.page) || 1
 
   const retrieveNews = async () => {
-    setLoading(true)
+    setLoadingSearch(true)
 
     const params = { q }
 
@@ -37,15 +39,24 @@ export default function Import() {
       setNewsResponse(result.data)
     } catch (error) {
       setTimeout(setError, 5000, null)
-      setError(error.response?.data?.error || 'Error retrieving news')
+      setError(error?.response?.data?.error || 'Error retrieving news')
     }
 
-    setLoading(false)
+    setLoadingSearch(false)
   }
 
   const importNews = async () => {
     const news = [ ...selected.values() ]
-    await axios.post('/api/import', news)
+    setLoadingImport(true)
+    try {
+      const response = await axios.post('/api/import', news)
+      setTimeout(setSuccess, 5000, null)
+      setSuccess(response.data?.added)
+    } catch (e) {
+      setTimeout(setError, 5000, null)
+      setError(error?.response?.data?.error || 'Error importing news')
+    }
+    setLoadingImport(false)
   }
 
   useEffect(() => {
@@ -136,8 +147,8 @@ export default function Import() {
           <input
             type="submit"
             className="btn btn-primary w-100"
-            value={ loading ? 'Loading...' : 'Search' }
-            disabled={ loading } />
+            value={ loadingSearch ? 'Loading...' : 'Search' }
+            disabled={ loadingSearch } />
         </div>
       </form>
       <div className="mb-4">
@@ -151,13 +162,30 @@ export default function Import() {
       <NewsList news={ newsResponse.articles } onSelect={ handleOnSelect } selected={ selected } />
       {
         newsResponse.articles?.length > 0 &&
-          <div className="my-4 text-end">
-            <button
-              onClick={ importNews }
-              className="btn btn-primary">
-              Import selected
-            </button>
-          </div>
+          <>
+            {
+              success && (
+                <div className="my-4 alert alert-success">
+                  Imported Successfully!
+                  <ul>
+                    {
+                      success.map(message => (
+                        <li key="message">{ message }</li>
+                      ))
+                    }
+                  </ul>
+                </div>
+              )
+            }
+            <div className="my-4 text-end">
+              <button
+                onClick={ importNews }
+                className="btn btn-primary"
+                disabled={ loadingImport }>
+                { loadingImport ? 'Loading...' : 'Import selected' }
+              </button>
+            </div>
+          </>
       }
       <Pagination count={ newsResponse.totalResults / 20 || 0 } page={ page } />
     </>
