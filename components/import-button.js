@@ -19,7 +19,7 @@ export default function ImportButton() {
           onClick={ importNews }
           className="btn btn-primary"
           disabled={ importLoading || !Object.keys(selected).length }>
-          { importLoading ? 'Loading...' : 'Import selected' }
+          { importLoading ? 'Loading...' : `Import ${ Object.keys(selected).length } selected articles` }
         </button>
       </div>
       {
