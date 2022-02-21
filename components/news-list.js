@@ -10,6 +10,7 @@ export default function NewsList({ news = [], selectable }) {
   const dispatch = useDispatch()
 
   const [ allSelected, setAllSelected ] = useState(false)
+  const [ parentId ] = useState(`id-${crypto.randomUUID()}`)
 
   const handleSelect = article => {
     dispatch(
@@ -45,7 +46,7 @@ export default function NewsList({ news = [], selectable }) {
             </div>
           )
         }
-        <div className="accordion mb-3" id="news-accordion">
+        <div className="accordion mb-3" id={ parentId }>
           {
             news.map(article => (
               <div className="accordion-item" key={ article.id }>
@@ -68,13 +69,14 @@ export default function NewsList({ news = [], selectable }) {
                 <div
                   className="accordion-collapse collapse"
                   id={`col-${ article.id }`}
-                  data-bs-parent="#news-accordion">
+                  data-bs-parent={ `#${parentId}` }>
                   <div className="accordion-body">
                     <div className="row">
                       <div className="col-12 col-md-4 d-flex align-items-center justify-content-center">
                         <img className="mw-100" src={article.urlToImage} alt={article.title} />
                       </div>
                       <div className="col-12 col-md-8 d-flex flex-column">
+                        <h4>{ article.title }</h4>
                         <div className="mb-3 flex-grow-1">{article.description}</div>
                         <div className="text-muted small d-flex justify-content-between align-items-center">
                           <a className="btn btn-primary" href={article.url} target="_blank" rel="noreferrer">
