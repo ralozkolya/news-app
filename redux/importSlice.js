@@ -16,6 +16,7 @@ export const fetchImport = createAsyncThunk(
       return response.data
     } finally {
       dispatch(setLoading(false))
+      setTimeout(() => dispatch(setSuccess(null)), 5000)
     }
   }
 )
