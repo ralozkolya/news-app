@@ -5,7 +5,7 @@ import { newsSelector } from '../redux/newsSlice'
 export default function ImportButton() {
 
   const { newsResponse } = useSelector(newsSelector)
-  const { success, loading: importLoading, selected } = useSelector(importSelector)
+  const { success, errors, loading: importLoading, selected } = useSelector(importSelector)
   const dispatch = useDispatch()
 
   const importNews = async () => {
@@ -14,20 +14,6 @@ export default function ImportButton() {
 
   return newsResponse.articles?.length > 0 &&
     <>
-      {
-        success && (
-          <div className="my-4 alert alert-success">
-            Imported Successfully!
-            <ul>
-              {
-                success.map(message => (
-                  <li key={ message }>{ message }</li>
-                ))
-              }
-            </ul>
-          </div>
-        )
-      }
       <div className="my-4 text-end">
         <button
           onClick={ importNews }
@@ -36,5 +22,37 @@ export default function ImportButton() {
           { importLoading ? 'Loading...' : 'Import selected' }
         </button>
       </div>
+      {
+        success && (
+          <div className="my-4 alert alert-success">
+            Imported Successfully!
+            {
+              !!success.length && (
+                <ul>
+                  {
+                    success.map(message => (
+                      <li key={ message }>{ message }</li>
+                    ))
+                  }
+                </ul>
+              )
+            }
+          </div>
+        )
+      }
+      {
+        !!errors?.length && (
+          <div className="my-4 alert alert-warning">
+            Errors encountered while importing:
+            <ul>
+              {
+                errors.map(message => (
+                  <li key={ message }>{ message }</li>
+                ))
+              }
+            </ul>
+          </div>
+        )
+      }
     </>
 }
