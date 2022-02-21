@@ -13,6 +13,7 @@ export default function Home() {
       </ol>
       <p>
         This app is developed using <a href="https://nextjs.org/" target="_blank" rel="noreferrer">NextJS</a> framework,
+        utilizing <a href="https://redux-toolkit.js.org/">Redux Toolkit</a>,
         and is backed by <a href="https://www.mongodb.com/" target="_blank" rel="noreferrer">MongoDB</a> NoSQL database.
       </p>
     </>
