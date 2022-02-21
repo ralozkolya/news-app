@@ -1,20 +1,14 @@
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import NewsList from '../components/news-list'
 import Pagination from '../components/pagination'
 import { newsSelector } from '../redux/newsSlice'
-import { fetchImport, importSelector } from '../redux/importSlice'
 import SearchForm from '../components/search-form'
+import ImportButton from '../components/import-button'
 
 export default function Import() {
 
-  const { newsResponse } = useSelector(newsSelector)
-  const { success, loading: importLoading } = useSelector(importSelector)
-  const dispatch = useDispatch()
-
-  const importNews = async () => {
-    dispatch(fetchImport())
-  }
+  const { newsResponse: { articles, totalResults } } = useSelector(newsSelector)
 
   return (
     <>
@@ -23,35 +17,11 @@ export default function Import() {
 
       <SearchForm />
 
-      <NewsList news={ newsResponse.articles } selectable />
-      {
-        newsResponse.articles?.length > 0 &&
-          <>
-            {
-              success && (
-                <div className="my-4 alert alert-success">
-                  Imported Successfully!
-                  <ul>
-                    {
-                      success.map(message => (
-                        <li key={ message }>{ message }</li>
-                      ))
-                    }
-                  </ul>
-                </div>
-              )
-            }
-            <div className="my-4 text-end">
-              <button
-                onClick={ importNews }
-                className="btn btn-primary"
-                disabled={ importLoading }>
-                { importLoading ? 'Loading...' : 'Import selected' }
-              </button>
-            </div>
-          </>
-      }
-      <Pagination count={ newsResponse.totalResults / 20 || 0 } />
+      <NewsList news={ articles } selectable />
+
+      <ImportButton />
+
+      <Pagination count={ totalResults / 20 || 0 } />
     </>
   )
 }
