@@ -4,7 +4,7 @@ import axios from 'axios'
 export const fetchImport = createAsyncThunk(
   'import/fetch',
   async (_, { dispatch, getState }) => {
-    const { setLoading, setSuccess } = importSlice.actions
+    const { setLoading, setSuccess, setErrors } = importSlice.actions
     dispatch(setLoading(true))
     dispatch(setSuccess(null))
 
@@ -16,7 +16,10 @@ export const fetchImport = createAsyncThunk(
       return response.data
     } finally {
       dispatch(setLoading(false))
-      setTimeout(() => dispatch(setSuccess(null)), 5000)
+      setTimeout(() => {
+        dispatch(setSuccess(null))
+        dispatch(setErrors(null))
+      }, 5000)
     }
   }
 )
@@ -26,6 +29,7 @@ const importSlice = createSlice({
   initialState: {
     loading: false,
     success: null,
+    errors: null,
     selected: {},
   },
   reducers: {
@@ -34,6 +38,9 @@ const importSlice = createSlice({
     },
     setSuccess(state, action) {
       state.success = action.payload
+    },
+    setErrors(state, action) {
+      state.errors = action.payload
     },
     setSelected(state, { payload: { id, value } }) {
       if (value) {
@@ -46,7 +53,11 @@ const importSlice = createSlice({
   extraReducers: {
     [fetchImport.fulfilled]: (state, action) => {
       state.success = action.payload.added
+      state.errors = action.payload.errors
     },
+    [fetchImport.rejected]: state => {
+      state.errors = [ 'Error importing news' ]
+    }
   }
 })
 
