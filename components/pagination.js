@@ -2,9 +2,10 @@ import PropTypes from 'prop-types'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-export default function Pagination({ count, page, perPage = 20 }) {
+export default function Pagination({ count, perPage = 20 }) {
 
-  const router = useRouter();
+  const router = useRouter()
+  const page = Math.max(1, router.query.page) || 1
 
   const last = Math.ceil(count / perPage)
   const result = [ page - 2, page - 1, page, page + 1, page + 2 ]
@@ -30,7 +31,6 @@ export default function Pagination({ count, page, perPage = 20 }) {
 
 Pagination.propTypes = {
   count: PropTypes.number,
-  page: PropTypes.number,
   perPage: PropTypes.number,
 }
 

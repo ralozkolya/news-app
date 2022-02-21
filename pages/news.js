@@ -3,14 +3,14 @@ import Pagination from '../components/pagination';
 
 const PER_PAGE = 20
 
-export default function News ({ news, count, page }) {
+export default function News ({ news, count }) {
   return (
     <>
       <h1 className="mb-4">Imported news</h1>
       <p className="mb-5">These news have been imported and don't depend on NewsApi.org external API to function</p>
       <>
         <NewsList news={ news } />
-        <Pagination count={ count } page={ page } />
+        <Pagination count={ count } />
       </>
     </>
   );
@@ -30,5 +30,5 @@ export async function getServerSideProps({ query }) {
   // NextJS really doesn't like MongoDB ObjectID type
   news = JSON.parse(JSON.stringify(news))
 
-  return { props: { news, count, page } }
+  return { props: { news, count } }
 }

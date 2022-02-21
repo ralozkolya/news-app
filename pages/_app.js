@@ -1,7 +1,9 @@
 import { useEffect } from 'react'
 import Head from 'next/head'
+import { Provider } from 'react-redux'
 
 import Navbar from '../components/navbar'
+import store from '../redux/store'
 
 import '../styles/global.scss'
 
@@ -12,7 +14,7 @@ function MyApp({ Component, pageProps }) {
   }, [])
 
   return (
-    <>
+    <Provider store={store}>
       <Head>
         <title>News App</title>
         <meta name="description" content="Technical assignment" />
@@ -22,7 +24,7 @@ function MyApp({ Component, pageProps }) {
       <main className="container">
         <Component {...pageProps} />
       </main>
-    </>
+    </Provider>
   )
 }
 
