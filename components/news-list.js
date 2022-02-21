@@ -10,7 +10,7 @@ export default function NewsList({ news = [], selectable }) {
   const dispatch = useDispatch()
 
   const [ allSelected, setAllSelected ] = useState(false)
-  const [ parentId ] = useState(`id-${crypto.randomUUID()}`)
+  const [ parentId ] = useState(`id-${ Math.floor(Math.random() * 1000) }`)
 
   const handleSelect = article => {
     dispatch(
